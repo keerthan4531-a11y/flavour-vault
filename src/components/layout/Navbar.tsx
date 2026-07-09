@@ -151,14 +151,13 @@ export function Navbar() {
             {/* Mock Sync UI */}
             <div
               style={{
-                display: 'flex',
+                display: window.innerWidth > 768 ? 'flex' : 'none',
                 alignItems: 'center',
                 gap: 6,
                 padding: '6px 12px',
                 borderRadius: 20,
                 background: 'rgba(255,255,255,0.05)',
                 border: '1px solid rgba(255,255,255,0.1)',
-                display: window.innerWidth > 768 ? 'flex' : 'none'
               }}
               title="Mock Cloud Sync Status"
             >

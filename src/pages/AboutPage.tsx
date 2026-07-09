@@ -1,7 +1,7 @@
 // About Page
 
 import { motion } from 'framer-motion';
-import { Heart, Code2, Sparkles, ChefHat } from 'lucide-react';
+import { Heart, Code2, Sparkles, ChefHat, Book, Search, Camera, Brain, CheckCircle2 } from 'lucide-react';
 
 export function AboutPage() {
   return (
@@ -43,61 +43,70 @@ export function AboutPage() {
             </p>
           </motion.div>
 
-          {/* Features */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {[
-              { icon: ChefHat, title: 'Built for Food Lovers', desc: 'Every feature is crafted with the home cook in mind — from ingredient checklists to step-by-step mode.' },
-              { icon: Sparkles, title: 'Premium Design', desc: 'Inspired by the boldest brands in food tech. Dark wine canvas, blood-red accents, and massive typography.' },
-              { icon: Code2, title: 'Modern Tech Stack', desc: 'Built with React, TypeScript, Tailwind CSS v4, Framer Motion, and IndexedDB for offline-first storage.' },
-              { icon: Heart, title: 'Made with Love', desc: 'This app is a passion project. All your recipes stay safely on your device — no servers, no tracking.' },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="glass-card"
-                style={{
-                  display: 'flex',
-                  gap: 16,
-                  padding: '24px',
-                  cursor: 'default',
-                }}
-              >
-                <div
-                  style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 12,
-                    background: 'rgba(225,6,0,0.1)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
+          {/* Core Features */}
+          <div style={{ marginBottom: 48 }}>
+            <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: 24, fontWeight: 800, textTransform: 'uppercase', marginBottom: 24, color: 'var(--text-primary)' }}>
+              Core Features
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+              {[
+                { icon: ChefHat, title: 'Recipe Management', desc: 'Add, edit, and organize your recipes with a beautiful interface.' },
+                { icon: Brain, title: 'AI Kitchen (INIXA)', desc: 'Generate recipes from ingredients, analyze nutrition, and chat with your AI assistant.' },
+                { icon: Camera, title: 'Direct Camera & Gallery', desc: 'Snap photos directly from the app or upload them to your visual recipe gallery.' },
+                { icon: Search, title: 'Smart Search & Filters', desc: 'Find recipes instantly by cuisine, diet, time, or specific ingredients.' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="glass-card"
+                  style={{ display: 'flex', gap: 16, padding: '20px', cursor: 'default' }}
                 >
-                  <item.icon size={20} color="#e10600" />
-                </div>
-                <div>
-                  <h3
-                    style={{
-                      fontFamily: "'Outfit', sans-serif",
-                      fontWeight: 700,
-                      fontSize: 16,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.02em',
-                      marginBottom: 4,
-                    }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                    {item.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                  <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(225,6,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <item.icon size={20} color="#e10600" />
+                  </div>
+                  <div>
+                    <h3 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 700, fontSize: 15, textTransform: 'uppercase', marginBottom: 4 }}>{item.title}</h3>
+                    <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* How to Use Guide */}
+          <div>
+            <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: 24, fontWeight: 800, textTransform: 'uppercase', marginBottom: 24, color: 'var(--text-primary)' }}>
+              How to Use Flavour Vault
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {[
+                { step: '1', title: 'Add a Recipe', text: 'Click the "+" button in the top right to manually add a recipe or capture an image. Fill in the ingredients, steps, and tags.' },
+                { step: '2', title: 'Explore AI Kitchen', text: 'Navigate to "AI Kitchen". Type your available ingredients into the generator or use the "Fridge Scanner" mock to build a recipe automatically.' },
+                { step: '3', title: 'Chat with INIXA', text: 'Open any recipe and use the floating chat widget on the bottom right to ask for ingredient substitutes or cooking tips.' },
+                { step: '4', title: 'Save Favorites', text: 'Click the heart icon on any recipe to add it to your favorites. The AI will learn your taste profile over time!' },
+                { step: '5', title: 'Browse Gallery', text: 'Head over to the "Gallery" to view all your recipe photos in a beautiful masonry layout.' }
+              ].map((guide, i) => (
+                <motion.div
+                  key={guide.step}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}
+                >
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#e10600', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontFamily: "'Outfit', sans-serif", flexShrink: 0, marginTop: 2 }}>
+                    {guide.step}
+                  </div>
+                  <div>
+                    <h3 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{guide.title}</h3>
+                    <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6 }}>{guide.text}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

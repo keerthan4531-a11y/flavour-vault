@@ -1,7 +1,5 @@
 <div align="center">
-  <img src="src/assets/hero.png" alt="Flavour Vault Logo" width="150" style="border-radius: 50%; border: 2px solid #e10600;"/>
-
-  # 🔥 FLAVOUR VAULT
+  <h1>🍌 FLAVOUR VAULT</h1>
   
   **The ultimate, AI-powered premium recipe collection app.** <br>
   *Built with React, TypeScript, and Framer Motion.*
