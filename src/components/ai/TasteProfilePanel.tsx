@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Star, Tag, Utensils } from 'lucide-react';
 import { useRecipeContext } from '../../context/RecipeContext';
-import { generateTasteProfile, TasteProfile } from '../../services/ai/tasteAnalyzer';
+import { generateTasteProfile, type TasteProfile } from '../../services/ai/tasteAnalyzer';
 
 export function TasteProfilePanel() {
   const { recipes } = useRecipeContext();
   const [profile, setProfile] = useState<TasteProfile | null>(null);
 
   useEffect(() => {
-    const favorites = recipes.filter(r => r.favorite);
+    const favorites = recipes.filter(r => r.isFavorite);
     setProfile(generateTasteProfile(favorites));
   }, [recipes]);
 
