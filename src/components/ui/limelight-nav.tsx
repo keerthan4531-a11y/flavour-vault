@@ -1,5 +1,5 @@
 import React, { useState, useRef, useLayoutEffect, cloneElement, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 export type NavItem = {
   id: string | number;
@@ -21,30 +21,24 @@ type LimelightNavProps = {
 
 export const LimelightNav = ({
   items,
-  defaultActiveIndex = 0,
-  onTabChange,
   className,
   limelightClassName,
   iconContainerClassName,
   iconClassName,
 }: LimelightNavProps) => {
   const location = useLocation();
-  const navigate = useNavigate();
   
-  const currentIndex = items.findIndex(item => item.path === location.pathname);
-  const initialIndex = currentIndex >= 0 ? currentIndex : defaultActiveIndex;
+  // Pure derived state! No useState or useEffect needed for syncing!
+  let activeIndex = items.findIndex(item => item.path === location.pathname);
+  if (activeIndex === -1) {
+    activeIndex = 0; // fallback if current path is not in nav
+  }
 
-  const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [isReady, setIsReady] = useState(false);
   const navItemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const limelightRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const idx = items.findIndex(item => item.path === location.pathname);
-    if (idx >= 0 && idx !== activeIndex) {
-      setActiveIndex(idx);
-    }
-  }, [location.pathname, items, activeIndex]);
+  // No useEffect needed to sync activeIndex!
 
   useLayoutEffect(() => {
     if (items.length === 0) return;
@@ -66,15 +60,6 @@ export const LimelightNav = ({
     return null; 
   }
 
-  const handleItemClick = (index: number, item: NavItem) => {
-    setActiveIndex(index);
-    onTabChange?.(index);
-    item.onClick?.();
-    if (item.path) {
-      navigate(item.path);
-    }
-  };
-
   return (
     <nav 
       className={className}
@@ -91,8 +76,9 @@ export const LimelightNav = ({
       }}
     >
       {items.map((item, index) => (
-          <a
+          <Link
             key={item.id}
+            to={item.path || '#'}
             ref={el => { navItemRefs.current[index] = el; }}
             className={iconContainerClassName}
             style={{
@@ -107,9 +93,12 @@ export const LimelightNav = ({
               margin: '0 4px',
               gap: 8,
               borderRadius: 9999,
+              textDecoration: 'none',
               transition: 'background-color 300ms'
             }}
-            onClick={() => handleItemClick(index, item)}
+            onClick={() => {
+              if (item.onClick) item.onClick();
+            }}
             aria-label={item.label}
           >
             {cloneElement(item.icon as React.ReactElement<any>, {
@@ -139,7 +128,7 @@ export const LimelightNav = ({
                 {item.label}
               </span>
             )}
-          </a>
+          </Link>
       ))}
 
       <div 
