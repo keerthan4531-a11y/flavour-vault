@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Heart, Plus, Search, BookOpen, Home, Image, Sparkles, Cloud, CloudLightning, CheckCircle2 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { APP_NAME } from '../../utils/constants';
+import { LimelightNav } from '../ui/limelight-nav';
 
 const NAV_LINKS = [
   { path: '/', label: 'Home', icon: Home },
@@ -95,55 +96,15 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav Links */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 24,
-            }}
-            className="hidden md:flex"
-          >
-            {NAV_LINKS.map((link) => {
-              const isActive = location.pathname === link.path;
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  style={{
-                    position: 'relative',
-                    padding: '12px 16px',
-                    fontSize: 14,
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: isActive ? 700 : 500,
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                    color: isActive ? '#e10600' : '#fff',
-                    transition: 'color 200ms',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                  }}
-                >
-                  <link.icon size={14} />
-                  {link.label}
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-indicator"
-                      style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: '60%',
-                        height: 2,
-                        background: '#e10600',
-                        borderRadius: 1,
-                      }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
+          <div className="hidden md:block">
+            <LimelightNav 
+              items={NAV_LINKS.map(link => ({
+                id: link.path,
+                path: link.path,
+                label: link.label,
+                icon: <link.icon />
+              }))}
+            />
           </div>
 
           {/* Right Actions */}
