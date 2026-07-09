@@ -18,6 +18,13 @@ const NAV_LINKS = [
   { path: '/about', label: 'About', icon: Heart },
 ];
 
+const LIMELIGHT_ITEMS = NAV_LINKS.map(link => ({
+  id: link.path,
+  path: link.path,
+  label: link.label,
+  icon: <link.icon />
+}));
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -97,14 +104,7 @@ export function Navbar() {
 
           {/* Desktop Nav Links */}
           <div className="hidden md:block">
-            <LimelightNav 
-              items={NAV_LINKS.map(link => ({
-                id: link.path,
-                path: link.path,
-                label: link.label,
-                icon: <link.icon />
-              }))}
-            />
+            <LimelightNav items={LIMELIGHT_ITEMS} />
           </div>
 
           {/* Right Actions */}
