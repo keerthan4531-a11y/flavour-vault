@@ -68,17 +68,17 @@ export function Navbar() {
       >
         <div
           style={{
-            maxWidth: 1280,
+            maxWidth: 1600,
             margin: '0 auto',
-            padding: '0 24px',
-            height: 64,
+            padding: '0 32px',
+            height: 72,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <motion.span
               style={{
                 fontFamily: "'Outfit', sans-serif",
@@ -99,7 +99,7 @@ export function Navbar() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 24,
             }}
             className="hidden md:flex"
           >
@@ -111,10 +111,10 @@ export function Navbar() {
                   to={link.path}
                   style={{
                     position: 'relative',
-                    padding: '8px 16px',
-                    fontSize: 13,
+                    padding: '12px 16px',
+                    fontSize: 14,
                     fontFamily: "'Outfit', sans-serif",
-                    fontWeight: isActive ? 600 : 400,
+                    fontWeight: isActive ? 700 : 500,
                     letterSpacing: '0.06em',
                     textTransform: 'uppercase',
                     color: isActive ? '#e10600' : '#fff',
@@ -147,7 +147,7 @@ export function Navbar() {
           </div>
 
           {/* Right Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
             {/* Mock Sync UI */}
             <div
               style={{
