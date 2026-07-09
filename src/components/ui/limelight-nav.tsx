@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, cloneElement, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 
 export type NavItem = {
@@ -101,18 +101,22 @@ export const LimelightNav = ({
             }}
             aria-label={item.label}
           >
-            {cloneElement(item.icon as React.ReactElement<any>, {
-              style: {
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 width: 20,
                 height: 20,
                 transition: 'all 300ms ease-in-out',
                 opacity: activeIndex === index ? 1 : 0.6,
                 transform: activeIndex === index ? 'scale(1.1)' : 'scale(1)',
                 color: activeIndex === index ? '#e10600' : 'white',
-                ...(item.icon as React.ReactElement<any>).props.style
-              },
-              className: `${(item.icon as React.ReactElement<any>).props.className || ''} ${iconClassName || ''}`.trim(),
-            })}
+              }}
+              className={iconClassName}
+            >
+              {item.icon}
+            </div>
             {item.label && (
               <span 
                 style={{
