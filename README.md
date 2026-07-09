@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🍌 FLAVOUR VAULT</h1>
+  <h1> FLAVOUR VAULT</h1>
   
   **The ultimate, AI-powered premium recipe collection app.** <br>
   *Built with React, TypeScript, and Framer Motion.*
