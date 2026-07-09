@@ -49,9 +49,13 @@ JSON Schema:
   "tags": ["string"]
 }`;
 
-export function AIRecipeGenerator() {
+interface AIRecipeGeneratorProps {
+  initialInput?: string;
+}
+
+export function AIRecipeGenerator({ initialInput = '' }: AIRecipeGeneratorProps = {}) {
   const [mode, setMode] = useState<TabMode>('ingredients');
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(initialInput);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<GeneratedRecipe | null>(null);
   const [thinking, setThinking] = useState('');

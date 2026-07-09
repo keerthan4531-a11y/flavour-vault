@@ -2,8 +2,9 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, Camera, X, Image as ImageIcon } from 'lucide-react';
+import { Upload, Camera, X, Image as ImageIcon, Video } from 'lucide-react';
 import { compressImage } from '../../utils/imageHelper';
+import { CameraModal } from '../ui/CameraModal';
 
 interface ImageUploaderProps {
   images: string[];
@@ -15,6 +16,7 @@ interface ImageUploaderProps {
 export function ImageUploader({ images, onImagesChange, maxImages = 10, label = 'Upload Photos' }: ImageUploaderProps) {
   const [dragging, setDragging] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = useCallback(async (files: FileList) => {
@@ -65,6 +67,26 @@ export function ImageUploader({ images, onImagesChange, maxImages = 10, label = 
       >
         {label} ({images.length}/{maxImages})
       </label>
+
+      {/* Buttons */}
+      <div style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          className="btn-ghost"
+          style={{ flex: 1, padding: '10px', fontSize: 13, background: 'rgba(255,255,255,0.05)' }}
+        >
+          <Upload size={16} style={{ marginRight: 8 }} /> Upload File
+        </button>
+        <button
+          type="button"
+          onClick={() => setCameraOpen(true)}
+          className="btn-ghost"
+          style={{ flex: 1, padding: '10px', fontSize: 13, background: 'rgba(225,6,0,0.1)', color: '#e10600' }}
+        >
+          <Camera size={16} style={{ marginRight: 8 }} /> Take Photo
+        </button>
+      </div>
 
       {/* Drop zone */}
       <motion.div
@@ -187,6 +209,16 @@ export function ImageUploader({ images, onImagesChange, maxImages = 10, label = 
           </AnimatePresence>
         </div>
       )}
+
+      <CameraModal
+        isOpen={cameraOpen}
+        onClose={() => setCameraOpen(false)}
+        onCapture={(base64) => {
+          if (images.length < maxImages) {
+            onImagesChange([...images, base64]);
+          }
+        }}
+      />
     </div>
   );
 }

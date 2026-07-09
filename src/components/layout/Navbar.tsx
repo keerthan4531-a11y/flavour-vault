@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Heart, Plus, Search, BookOpen, Home, Image, Sparkles } from 'lucide-react';
+import { Menu, X, Sun, Moon, Heart, Plus, Search, BookOpen, Home, Image, Sparkles, Cloud, CloudLightning, CheckCircle2 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { APP_NAME } from '../../utils/constants';
 
@@ -20,8 +20,22 @@ const NAV_LINKS = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [syncState, setSyncState] = useState<'synced' | 'syncing' | 'offline'>('syncing');
   const { theme, toggleTheme, isDark } = useTheme();
   const location = useLocation();
+
+  useEffect(() => {
+    // Mock Cloud Sync Simulation
+    const syncInterval = setInterval(() => {
+      setSyncState('syncing');
+      setTimeout(() => setSyncState('synced'), 2500);
+    }, 30000); // sync every 30 seconds
+    
+    // Initial sync
+    setTimeout(() => setSyncState('synced'), 2000);
+
+    return () => clearInterval(syncInterval);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -133,7 +147,33 @@ export function Navbar() {
           </div>
 
           {/* Right Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            {/* Mock Sync UI */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '6px 12px',
+                borderRadius: 20,
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                display: window.innerWidth > 768 ? 'flex' : 'none'
+              }}
+              title="Mock Cloud Sync Status"
+            >
+              {syncState === 'syncing' ? (
+                <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 2, ease: "linear" }}>
+                  <CloudLightning size={14} color="#a78bfa" />
+                </motion.div>
+              ) : (
+                <CheckCircle2 size={14} color="#22c55e" />
+              )}
+              <span style={{ fontSize: 11, fontFamily: "'Outfit', sans-serif", fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
+                {syncState === 'syncing' ? 'Syncing...' : 'Synced'}
+              </span>
+            </div>
+
             <Link to="/add-recipe">
               <motion.button
                 whileHover={{ scale: 1.05 }}

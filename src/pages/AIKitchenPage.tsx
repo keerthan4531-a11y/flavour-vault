@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import { Sparkles, Brain, ChefHat, Activity, Lightbulb, Wand2 } from 'lucide-react';
 import { AIRecipeGenerator } from '../components/ai/AIRecipeGenerator';
+import { TasteProfilePanel } from '../components/ai/TasteProfilePanel';
+import { FridgeScannerMock } from '../components/ai/FridgeScannerMock';
 
 export function AIKitchenPage() {
   return (
@@ -82,6 +84,12 @@ export function AIKitchenPage() {
                 <p style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{feat.desc}</p>
               </motion.div>
             ))}
+          </div>
+
+          {/* Taste Profile & Scanner Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24, marginBottom: 40 }}>
+            <TasteProfilePanel />
+            <FridgeScannerMock />
           </div>
 
           {/* AI Generator */}
