@@ -1,5 +1,6 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
 
 export type NavItem = {
   id: string | number;
@@ -27,8 +28,9 @@ export const LimelightNav = ({
   iconClassName,
 }: LimelightNavProps) => {
   const location = useLocation();
+  const { isDark } = useTheme();
   
-  // Pure derived state! No useState or useEffect needed for syncing!
+  // Derived state for activeIndex
   let activeIndex = items.findIndex(item => item.path === location.pathname);
   if (activeIndex === -1) {
     activeIndex = 0; // fallback if current path is not in nav
@@ -67,11 +69,11 @@ export const LimelightNav = ({
         position: 'relative',
         display: 'inline-flex',
         alignItems: 'center',
-        height: 64,
+        height: 48,
         borderRadius: 9999,
-        backgroundColor: 'rgba(255,255,255,0.02)',
-        color: 'white',
-        border: '1px solid rgba(255,255,255,0.05)',
+        backgroundColor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.03)',
+        color: isDark ? 'white' : 'var(--text-primary)',
+        border: isDark ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(0,0,0,0.06)',
         padding: '0 8px'
       }}
     >
@@ -111,7 +113,7 @@ export const LimelightNav = ({
                 transition: 'all 300ms ease-in-out',
                 opacity: activeIndex === index ? 1 : 0.6,
                 transform: activeIndex === index ? 'scale(1.1)' : 'scale(1)',
-                color: activeIndex === index ? '#e10600' : 'white',
+                color: activeIndex === index ? '#e10600' : (isDark ? 'white' : 'var(--text-primary)'),
               }}
               className={iconClassName}
             >
@@ -120,13 +122,13 @@ export const LimelightNav = ({
             {item.label && (
               <span 
                 style={{
-                  fontSize: 14,
+                  fontSize: 13,
                   fontFamily: "'Outfit', sans-serif",
-                  letterSpacing: '0.05em',
+                  letterSpacing: '0.04em',
                   textTransform: 'uppercase',
                   transition: 'all 300ms',
                   fontWeight: activeIndex === index ? 700 : 500,
-                  color: activeIndex === index ? '#e10600' : 'rgba(255,255,255,0.7)'
+                  color: activeIndex === index ? '#e10600' : (isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.65)')
                 }}
               >
                 {item.label}

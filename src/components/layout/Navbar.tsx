@@ -58,28 +58,38 @@ export function Navbar() {
   return (
     <>
       <motion.nav
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', damping: 22, stiffness: 120 }}
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
+          top: 16,
+          left: 16,
+          right: 16,
+          margin: '0 auto',
+          maxWidth: 1400,
           zIndex: 100,
-          background: scrolled ? 'rgba(0,0,0,0.92)' : 'rgba(0,0,0,0.8)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: scrolled ? '1px solid rgba(255,199,198,0.08)' : '1px solid transparent',
-          transition: 'all 300ms ease',
+          background: isDark
+            ? (scrolled ? 'rgba(38, 2, 18, 0.45)' : 'rgba(255, 255, 255, 0.03)')
+            : (scrolled ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.35)'),
+          backdropFilter: 'blur(28px)',
+          WebkitBackdropFilter: 'blur(28px)',
+          borderRadius: 24,
+          border: isDark
+            ? '1px solid rgba(255, 255, 255, 0.08)'
+            : '1px solid rgba(79, 4, 35, 0.08)',
+          boxShadow: isDark
+            ? '0 12px 40px 0 rgba(0, 0, 0, 0.45), inset 0 1px 2px 0 rgba(255, 255, 255, 0.15)'
+            : '0 8px 32px 0 rgba(79, 4, 35, 0.06), inset 0 1px 2px 0 rgba(255, 255, 255, 0.45)',
+          transition: 'background-color 400ms, border-color 400ms, box-shadow 400ms, top 400ms',
         }}
       >
         <div
           style={{
-            maxWidth: 1600,
+            maxWidth: 1400,
             margin: '0 auto',
-            padding: '0 32px',
-            height: 72,
+            padding: '0 24px',
+            height: 64,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -157,8 +167,8 @@ export function Navbar() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'rgba(255,199,198,0.1)',
-                color: '#ffc7c6',
+                background: isDark ? 'rgba(255,199,198,0.1)' : 'rgba(79,4,35,0.06)',
+                color: isDark ? '#ffc7c6' : '#7a3050',
                 border: 'none',
                 cursor: 'pointer',
               }}
@@ -179,8 +189,8 @@ export function Navbar() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'rgba(255,199,198,0.1)',
-                color: '#fff',
+                background: isDark ? 'rgba(255,199,198,0.1)' : 'rgba(79,4,35,0.06)',
+                color: isDark ? '#fff' : '#1a0a10',
                 border: 'none',
                 cursor: 'pointer',
               }}
@@ -196,16 +206,22 @@ export function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
             style={{
               position: 'fixed',
-              inset: 0,
-              top: 64,
+              left: 16,
+              right: 16,
+              top: 92,
+              bottom: 16,
               zIndex: 90,
-              background: 'rgba(0,0,0,0.95)',
-              backdropFilter: 'blur(20px)',
+              background: isDark ? 'rgba(0,0,0,0.94)' : 'rgba(255,255,255,0.96)',
+              backdropFilter: 'blur(24px)',
+              borderRadius: 24,
+              border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(79, 4, 35, 0.08)',
+              boxShadow: '0 12px 40px 0 rgba(0,0,0,0.4)',
+              overflowY: 'auto',
             }}
             className="md:hidden"
           >
@@ -272,7 +288,7 @@ export function Navbar() {
       </AnimatePresence>
 
       {/* Spacer */}
-      <div style={{ height: 64 }} />
+      <div style={{ height: 80 }} />
     </>
   );
 }

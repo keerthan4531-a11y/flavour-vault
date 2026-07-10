@@ -6,9 +6,29 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { AIChatWidget } from './components/ai/AIChatWidget';
 import { useEffect } from 'react';
+import Lenis from 'lenis';
 
 export function App() {
   const location = useLocation();
+
+  // Initialize Lenis smooth scroll
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   // Scroll to top on route change
   useEffect(() => {

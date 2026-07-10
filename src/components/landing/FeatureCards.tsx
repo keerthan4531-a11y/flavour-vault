@@ -66,74 +66,119 @@ export function FeatureCards() {
           </h2>
         </motion.div>
 
-        {/* Cards grid */}
+        {/* Bento Grid */}
         <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: 20,
-          }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-5"
         >
           {FEATURES.map((feature, i) => {
             const Icon = ICONS[feature.icon] || BookOpen;
+            const isLarge = i === 0 || i === 3;
             return (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.12, duration: 0.5 }}
-                whileHover={{ y: -8, boxShadow: '0 20px 60px rgba(225,6,0,0.15)' }}
+                transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                whileHover="hover"
+                variants={{
+                  hover: {
+                    y: -8,
+                    boxShadow: '0 20px 45px rgba(225,6,0,0.18)',
+                    borderColor: 'rgba(225,6,0,0.3)',
+                    backgroundColor: 'rgba(79,4,35,0.7)',
+                  }
+                }}
+                className={`col-span-1 ${isLarge ? 'md:col-span-2' : 'md:col-span-1'} relative overflow-hidden`}
                 style={{
-                  padding: 32,
-                  borderRadius: 20,
+                  padding: isLarge ? '40px 36px' : '32px 28px',
+                  borderRadius: 24,
                   background: 'var(--glass-bg)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
                   border: '1px solid var(--glass-border)',
-                  transition: 'all 300ms',
+                  transition: 'background-color 300ms, border-color 300ms, box-shadow 300ms',
                   cursor: 'default',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  minHeight: isLarge ? 240 : 260,
                 }}
               >
-                {/* Icon */}
-                <motion.div
-                  whileHover={{ rotate: 5, scale: 1.1 }}
+                <div
                   style={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: 16,
-                    background: 'rgba(225,6,0,0.1)',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 20,
+                    flexDirection: isLarge ? 'row' : 'column',
+                    alignItems: isLarge ? 'center' : 'flex-start',
+                    gap: isLarge ? 28 : 20,
+                    height: '100%',
                   }}
                 >
-                  <Icon size={24} color="#e10600" />
-                </motion.div>
+                  {/* Icon */}
+                  <motion.div
+                    variants={{
+                      hover: { rotate: 10, scale: 1.15 }
+                    }}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: 18,
+                      background: 'rgba(225,6,0,0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                      border: '1px solid rgba(225,6,0,0.15)',
+                    }}
+                  >
+                    <Icon size={26} color="#e10600" />
+                  </motion.div>
 
-                <h3
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 700,
-                    fontSize: 18,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.02em',
-                    marginBottom: 8,
-                    color: 'var(--text-primary)',
+                  <div>
+                    <h3
+                      style={{
+                        fontFamily: "'Outfit', sans-serif",
+                        fontWeight: 800,
+                        fontSize: isLarge ? 20 : 18,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.03em',
+                        marginBottom: 8,
+                        color: 'var(--text-primary)',
+                      }}
+                    >
+                      {feature.title}
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: isLarge ? 15 : 14,
+                        lineHeight: 1.6,
+                        color: 'var(--text-secondary)',
+                      }}
+                    >
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Ambient glow in hover */}
+                <motion.div
+                  variants={{
+                    hover: { scale: 1.4, opacity: 0.8 }
                   }}
-                >
-                  {feature.title}
-                </h3>
-                <p
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
                   style={{
-                    fontSize: 14,
-                    lineHeight: 1.6,
-                    color: 'var(--text-secondary)',
+                    position: 'absolute',
+                    bottom: '-25%',
+                    right: '-15%',
+                    width: 140,
+                    height: 140,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(225,6,0,0.15) 0%, transparent 70%)',
+                    filter: 'blur(30px)',
+                    pointerEvents: 'none',
+                    opacity: 0,
                   }}
-                >
-                  {feature.description}
-                </p>
+                />
               </motion.div>
             );
           })}

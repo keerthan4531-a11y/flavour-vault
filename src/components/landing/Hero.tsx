@@ -1,13 +1,31 @@
 // Hero Section — Full-screen hero with massive display type
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Search, ChevronDown, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export function Hero() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Transform values for scroll-driven animations
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const videoRadius = useTransform(scrollYProgress, [0, 1], ['0px', '40px']);
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.25]);
+
+  // Parallax translation for the text content
+  const textY = useTransform(scrollYProgress, [0, 1], [0, -140]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
+  // Scroll indicator fade out
+  const indicatorOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -17,6 +35,7 @@ export function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       style={{
         position: 'relative',
         minHeight: '100vh',
@@ -30,62 +49,64 @@ export function Hero() {
     >
       {/* Animated background elements */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        {/* Large gradient orbs */}
+        {/* Hero food background video */}
         <motion.div
-          animate={{
-            x: [0, 30, -20, 0],
-            y: [0, -20, 30, 0],
-            scale: [1, 1.1, 0.95, 1],
-          }}
-          transition={{ repeat: Infinity, duration: 20, ease: 'easeInOut' }}
           style={{
             position: 'absolute',
-            top: '-20%',
-            right: '-10%',
-            width: '60vw',
-            height: '60vw',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(225,6,0,0.15) 0%, transparent 70%)',
-            filter: 'blur(80px)',
+            inset: 0,
+            overflow: 'hidden',
+            scale: videoScale,
+            borderRadius: videoRadius,
+            opacity: videoOpacity,
           }}
-        />
-        <motion.div
-          animate={{
-            x: [0, -30, 20, 0],
-            y: [0, 20, -30, 0],
-            scale: [1, 0.95, 1.1, 1],
-          }}
-          transition={{ repeat: Infinity, duration: 25, ease: 'easeInOut' }}
-          style={{
-            position: 'absolute',
-            bottom: '-20%',
-            left: '-10%',
-            width: '50vw',
-            height: '50vw',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(79,4,35,0.3) 0%, transparent 70%)',
-            filter: 'blur(80px)',
-          }}
-        />
-
-        {/* Hero food background image */}
-        <motion.div
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.2 }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
-          style={{
-            position: 'absolute',
-            inset: '-10%',
-            backgroundImage: 'url(/images/hero-food.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'blur(2px)',
-          }}
-        />
+        >
+          <motion.div
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            >
+              <source src="/hero-video.mp4" type="video/mp4" />
+            </video>
+            {/* Dark overlay for text contrast (removes red tint while keeping text readable) */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65))',
+              }}
+            />
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Content */}
-      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: 900 }}>
+      <motion.div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          textAlign: 'center',
+          maxWidth: 900,
+          y: textY,
+          opacity: textOpacity,
+        }}
+      >
         {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -270,7 +291,7 @@ export function Hero() {
             </motion.button>
           </Link>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
@@ -284,6 +305,7 @@ export function Hero() {
           flexDirection: 'column',
           alignItems: 'center',
           gap: 4,
+          opacity: indicatorOpacity,
         }}
       >
         <span
