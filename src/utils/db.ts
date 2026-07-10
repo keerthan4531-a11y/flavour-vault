@@ -83,12 +83,12 @@ export async function incrementViewCount(id: string): Promise<void> {
 
 export async function seedSampleRecipes(sampleRecipes: Recipe[]): Promise<void> {
   const db = await getDB();
-  const existing = await db.getAll(RECIPE_STORE);
-  if (existing.length === 0) {
-    const tx = db.transaction(RECIPE_STORE, 'readwrite');
-    for (const recipe of sampleRecipes) {
+  const tx = db.transaction(RECIPE_STORE, 'readwrite');
+  for (const recipe of sampleRecipes) {
+    const existingRecipe = await tx.store.get(recipe.id);
+    if (!existingRecipe) {
       await tx.store.put(recipe);
     }
-    await tx.done;
   }
+  await tx.done;
 }
